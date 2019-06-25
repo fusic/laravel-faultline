@@ -1,0 +1,14 @@
+{
+  "name": "fusic/laravel-faultline",
+  "description": "laravel-faultline",
+  "license": "MIT",
+  "require": {
+    "php": "^7.1.3",
+    "faultline/faultline": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "LaravelFaultline\\": "src"
+    }
+  }
+}
