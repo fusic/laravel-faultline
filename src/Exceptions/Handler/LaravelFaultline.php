@@ -25,7 +25,7 @@ class LaravelFaultline
         $config = config('faultline.config', []);
         $config = array_merge(self::DEFAULT_CONFIG, $config);
 
-        if (!App::isLocal() && $config['force'] === false) {
+        if (App::isLocal() && $config['force'] === false) {
             return ;
         }
 
