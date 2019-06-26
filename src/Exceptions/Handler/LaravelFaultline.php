@@ -22,10 +22,14 @@ class LaravelFaultline
      */
     public static function notify($exception): void
     {
+        if (!self::isSetup()) {
+            return ;
+        }
+
         $config = config('faultline.config', []);
         $config = array_merge(self::DEFAULT_CONFIG, $config);
 
-        if (!App::isLocal() && $config['force'] === false) {
+        if ((App::isLocal() || App::runningUnitTests()) && $config['force'] === false) {
             return ;
         }
 
@@ -59,5 +63,27 @@ class LaravelFaultline
         }
 
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    private static function isSetup(): bool
+    {
+        $checkList = [
+            'FAULTLINE_PROJECT',
+            'FAULTLINE_API_KEY',
+            'FAULTLINE_ENDPINT'
+        ];
+
+        foreach ($checkList as $check)
+        {
+            if (empty(env($check))) {
+                exit;
+                return false;
+            }
+        }
+
+        return true;
     }
 }
