@@ -79,7 +79,6 @@ class LaravelFaultline
         foreach ($checkList as $check)
         {
             if (empty(env($check))) {
-                exit;
                 return false;
             }
         }
