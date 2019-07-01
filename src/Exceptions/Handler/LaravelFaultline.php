@@ -9,9 +9,12 @@ class LaravelFaultline
 {
     private const DEFAULT_CONFIG = [
         'force' => false,
-        'deny' => [
-            '\Illuminate\Validation\ValidationException'
-        ]
+        'allowed_env' => [
+            'production',
+        ],
+        'deny_exception' => [
+            '\Illuminate\Validation\ValidationException',
+        ],
     ];
 
     /**
@@ -23,18 +26,18 @@ class LaravelFaultline
     public static function notify($exception): void
     {
         if (!self::isSetup()) {
-            return ;
+            return;
         }
 
         $config = config('faultline.config', []);
         $config = array_merge(self::DEFAULT_CONFIG, $config);
 
-        if ((App::isLocal() || App::runningUnitTests()) && $config['force'] === false) {
-            return ;
+        if (!in_array(App::environment(), $config['allowed_env'])) {
+            return;
         }
 
-        if (self::checkDeny($config['deny'], $exception)) {
-            return ;
+        if (self::checkDeny($config['deny_exception'], $exception)) {
+            return;
         }
 
         // Create new Notifier instance.
@@ -55,9 +58,8 @@ class LaravelFaultline
      */
     private static function checkDeny($denyList, $exception): bool
     {
-        foreach ($denyList as $deny)
-        {
-            if (is_a($exception,$deny)) {
+        foreach ($denyList as $deny) {
+            if (is_a($exception, $deny)) {
                 return true;
             }
         }
@@ -73,11 +75,10 @@ class LaravelFaultline
         $checkList = [
             'FAULTLINE_PROJECT',
             'FAULTLINE_API_KEY',
-            'FAULTLINE_ENDPINT'
+            'FAULTLINE_ENDPINT',
         ];
 
-        foreach ($checkList as $check)
-        {
+        foreach ($checkList as $check) {
             if (empty(env($check))) {
                 return false;
             }
