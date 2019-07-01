@@ -10,5 +10,12 @@
     "psr-4": {
       "LaravelFaultline\\": "src"
     }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "LaravelFaultline\\LaravelFaultlineServiceProvider"
+      ]
+    }
   }
 }
