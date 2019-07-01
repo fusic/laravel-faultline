@@ -9,6 +9,9 @@ class LaravelFaultline
 {
     private const DEFAULT_CONFIG = [
         'force' => false,
+        'allowed_env' => [
+            'production',
+        ],
         'deny_exception' => [
             '\Illuminate\Validation\ValidationException',
         ],
