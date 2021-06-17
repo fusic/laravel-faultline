@@ -1,6 +1,6 @@
 # laravel-faultline
 
-```
+```sh
 composer require fusic/laravel-faultline
 ```
 
@@ -8,13 +8,13 @@ composer require fusic/laravel-faultline
 
 ### Run
 
-```
+```sh
 php artisan vendor:publish
 ```
 
 ## Add faultline environment to .env
 
-```
+```sh
 # for faultline
 FAULTLINE_PROJECT=xxxx
 FAULTLINE_API_KEY=xxxx
@@ -39,11 +39,10 @@ FAULTLINE_SLACK_CHANNEL=xxxx
 
 ## Add faultline report event to app/Exceptions/Handler.php
 
-
-```
+```php
     use LaravelFaultline\Exceptions\Handler\LaravelFaultline;
 
-    public function report(Exception $exception)
+    public function report(Throwable $exception)
     {
         LaravelFaultline::notify($exception);
         
